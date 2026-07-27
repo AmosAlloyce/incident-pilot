@@ -1,0 +1,16 @@
+{"timestamp":"2024-10-22T05:55:00Z","level":"INFO","service":"geofence-service","facility_id":"1103","message":"Geofence service started — processing queue depth: 142 pending checks"}
+{"timestamp":"2024-10-22T05:56:30Z","level":"INFO","service":"geofence-service","worker_id":"7741","facility_id":"1103","message":"Clock-in geofence check initiated for worker 7741 at facility 1103"}
+{"timestamp":"2024-10-22T05:56:31Z","level":"INFO","service":"geofence-service","worker_id":"7741","facility_id":"1103","message":"Cache miss for facility 1103 polygon — calling Google Maps Geocoding API"}
+{"timestamp":"2024-10-22T05:56:32Z","level":"INFO","service":"geofence-service","worker_id":"7741","facility_id":"1103","message":"Geocoding API request dispatched — awaiting response"}
+{"timestamp":"2024-10-22T05:56:37Z","level":"WARN","service":"geofence-service","worker_id":"7741","facility_id":"1103","message":"Geocoding API response time 5012ms — SLA threshold is 3000ms"}
+{"timestamp":"2024-10-22T05:57:01Z","level":"ERROR","service":"geofence-service","worker_id":"7741","facility_id":"1103","message":"Geocoding API returned 429 Too Many Requests — rate limit exceeded","http_status":429}
+{"timestamp":"2024-10-22T05:57:01Z","level":"WARN","service":"geofence-service","worker_id":"7741","facility_id":"1103","message":"Retry 1/3 — backing off 1000ms"}
+{"timestamp":"2024-10-22T05:57:03Z","level":"ERROR","service":"geofence-service","worker_id":"7741","facility_id":"1103","message":"Geocoding API returned 429 Too Many Requests on retry 1","http_status":429}
+{"timestamp":"2024-10-22T05:57:03Z","level":"WARN","service":"geofence-service","worker_id":"7741","facility_id":"1103","message":"Retry 2/3 — backing off 2000ms"}
+{"timestamp":"2024-10-22T05:57:06Z","level":"ERROR","service":"geofence-service","worker_id":"7741","facility_id":"1103","message":"Geocoding API returned 429 Too Many Requests on retry 2","http_status":429}
+{"timestamp":"2024-10-22T05:57:06Z","level":"WARN","service":"geofence-service","worker_id":"7741","facility_id":"1103","message":"Retry 3/3 — backing off 4000ms"}
+{"timestamp":"2024-10-22T05:57:11Z","level":"ERROR","service":"geofence-service","worker_id":"7741","facility_id":"1103","message":"All retries exhausted — GeofenceCheckException thrown","trace":"com.clipboard.geofence.GeofenceCheckException: upstream timeout after 3 retries\n  at GeofenceService.checkBoundary(GeofenceService.java:204)\n  at GeofenceService.validateWorkerLocation(GeofenceService.java:178)\n  at ClockInOrchestrator.validate(ClockInOrchestrator.java:91)"}
+{"timestamp":"2024-10-22T05:57:11Z","level":"ERROR","service":"worker-app","worker_id":"7741","facility_id":"1103","message":"Clock-in rejected — geofence validation failed. Error: GeofenceCheckException"}
+{"timestamp":"2024-10-22T05:57:12Z","level":"WARN","service":"geofence-service","facility_id":"1103","message":"23% of clock-in attempts in last 10 minutes failed geofence check — anomaly threshold breached"}
+{"timestamp":"2024-10-22T05:57:15Z","level":"INFO","service":"alerting","message":"PagerDuty alert fired: P1 — geofence-service degraded for facility cluster HOSP-EAST"}
+{"timestamp":"2024-10-22T05:58:00Z","level":"INFO","service":"support-events","message":"Incident INC-0622 opened — geofence timeout affecting multiple facilities"}
