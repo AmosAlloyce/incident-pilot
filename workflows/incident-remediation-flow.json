@@ -1,0 +1,57 @@
+{
+  "name": "Incident Pilot Automated SRE Escalation & Mitigation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sre-incident-trigger",
+        "responseMode": "onReceived"
+      },
+      "name": "Sentry Error Ingestion",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "prompt": "Analyze incident error stack and git commit history to find root cause and propose runbook mitigation."
+      },
+      "name": "Groq SRE Root Cause Agent",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "channel": "#incident-war-room",
+        "text": ":fire: P1 Incident Root Cause Found: {{$json.rootCause}}. Mitigation Runbook: {{$json.runbook}}"
+      },
+      "name": "Create War Room & Notify Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [720, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://127.0.0.1:3002/api/incident-pilot/mitigate",
+        "method": "POST",
+        "bodyParametersUi": {
+          "parameter": [
+            { "name": "incidentId", "value": "={{$json.incidentId}}" },
+            { "name": "action", "value": "EXECUTE_RUNBOOK_SAFE_EXPANSION" }
+          ]
+        }
+      },
+      "name": "Execute Runbook Mitigation",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [960, 300]
+    }
+  ],
+  "connections": {
+    "Sentry Error Ingestion": { "main": [[{ "node": "Groq SRE Root Cause Agent", "type": "main", "index": 0 }]] },
+    "Groq SRE Root Cause Agent": { "main": [[{ "node": "Create War Room & Notify Slack", "type": "main", "index": 0 }]] },
+    "Create War Room & Notify Slack": { "main": [[{ "node": "Execute Runbook Mitigation", "type": "main", "index": 0 }]] }
+  }
+}

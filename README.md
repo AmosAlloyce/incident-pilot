@@ -1,12 +1,33 @@
-# incident-pilot
+# incident-pilot — Autonomous SRE War Room
 
+[![Live Production Cockpit](https://img.shields.io/badge/Live_Cockpit-alloyce.duckdns.org%2Fincident--pilot-f59e0b?style=for-the-badge&logo=google-chrome&logoColor=white)](https://alloyce.duckdns.org/incident-pilot)
 ![CI](../../actions/workflows/ci.yml/badge.svg)
 
-**A multi-agent Technical Support Engineer (TSE) investigation assistant.**
+**A multi-agent Technical Support Engineer (TSE) and SRE investigation platform.**
 
-Feed it a support ticket. Watch four specialised AI agents collaborate to triage,
+## 🌐 Live Web System & AI Agent Swarm
+
+The platform is deployed live on **Oracle Cloud Always Free (ARM64)** under the unified ecosystem endpoint:
+- **Interactive Cockpit**: [https://alloyce.duckdns.org/incident-pilot](https://alloyce.duckdns.org/incident-pilot)
+- **Flagship Ecosystem Hub**: [https://alloyce.duckdns.org](https://alloyce.duckdns.org)
+- **Guided Voice Walkthrough**: Built-in human-sounding narrated tour walking viewers through log ingestion, chaos injection (connection pool leaks), automated root-cause isolation, and runbook approval gates.
+
+### Autonomous AI Agent Swarm (Groq LLaMA 3.3)
+- **Incident Pilot Prime** — Incident Commander AI coordinating triage and response.
+- **SRE Triage Agent** — Classifies anomaly severity (P1/P2/P3) and filters noise in high-velocity log streams.
+- **Root Cause Investigator** — Cross-references error stack traces against recent git commits to pinpoint failure origins.
+- **Runbook Synthesizer** — Synthesizes immediate tactical mitigation runbooks (e.g. pool expansion, cache purge).
+- **Human-in-the-Loop Safety Gate** — Operator authorization gate before executing automated remediation actions.
+
+### n8n Workflow Automation
+Includes exportable production n8n workflow definition in [`workflows/incident-remediation-flow.json`](workflows/incident-remediation-flow.json):
+```
+Sentry Error Webhook -> Groq Root Cause Agent -> Slack War Room Alert -> Execute Runbook Mitigation
+```
+
+Feed it a support ticket or stream logs. Watch specialised AI agents collaborate to triage,
 query a historical incidents database, analyse application logs, and produce a
-structured Root Cause Analysis (RCA) report — all in under 30 seconds.
+structured Root Cause Analysis (RCA) report — all in seconds.
 
 ---
 
